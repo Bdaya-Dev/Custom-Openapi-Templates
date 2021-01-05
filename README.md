@@ -43,3 +43,9 @@ e.g. if the generator name is `dart-dio`
 ```bash
 openapi-generator-cli author template -g dart-dio
 ```
+
+## References for editing mustache files
+
+* All global config options: <https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-gradle-plugin/README.adoc>
+
+* Variables in mustache files: <https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/CodegenResponse.java>
