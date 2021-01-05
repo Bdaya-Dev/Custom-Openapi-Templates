@@ -1,0 +1,15 @@
+# Config options for the dart-dio generator
+
+#General
+inputSpec: #swagger schema url here, or can be a local file
+generatorName: dart-dio #or any other generator
+#validateSpec: false #only if there are problems with the current api spec
+templateDir: "_openapi-templates/dart-dio" #optional if you are using the custom templates here
+#specific to dart-dio 
+pubName: api_package_name
+pubVersion: 1.0.0+1 #Change this every time you re-generate the api
+pubDescription: "Api Package Description"
+typeMappings: #IMPORTANT if you are using dart-dio
+  binary: MultipartFile
+  file: MultipartFile
+
