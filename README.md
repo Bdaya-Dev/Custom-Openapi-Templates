@@ -18,8 +18,8 @@ These are custom mustache templates for some OpenApi Generators
    git submodule add https://github.com/Bdaya-Dev/Custom-Openapi-Templates.git _openapi-templates
    ```
 
-1. If the project already exists:
-   * [If the submodule folder doesn't exist] call `git submodule init`
+1. To update the submodule to the latest version:
+   * [If the submodule folder (_openapi-templates) doesn't exist] call `git submodule init`
    * `git submodule update`
 
 ## To generate api files
