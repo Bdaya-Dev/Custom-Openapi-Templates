@@ -15,7 +15,7 @@ These are custom mustache templates for some OpenApi Generators
 1. Add this repository as a git submodule
 
    ```bash
-   git submodule add https://github.com/Bdaya-Dev/Custom-Openapi-Templates.git _openapi-templates
+   git submodule add git@github.com:Bdaya-Dev/Custom-Openapi-Templates.git _openapi-templates
    ```
 
 1. To update the submodule to the latest version:
