@@ -19,6 +19,10 @@ part 'serializers.g.dart';
 
 //allow all models to be serialized within a list
 Serializers serializers = (_$serializers.toBuilder()
+{{#models}}{{#model}}..addBuilderFactory(
+const FullType(BuiltList, const [const FullType({{classname}})]),
+() => new ListBuilder<{{classname}}>())
+{{/model}}{{/models}}
 ..add(Iso8601DateTimeSerializer())
 ).build();
 
