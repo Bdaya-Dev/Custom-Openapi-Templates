@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:built_value/serializer.dart';
 
+Type typeOfElementsInList<T>(List<T> list) => T;
+List<Type> typeOfElementsInMap<TK,TV>(Map<TK,TV> map) => [TK,TV];
+
 /// Format the given parameter object into string.
 String parameterToString(Serializers serializers, dynamic value) {
   if (value == null) {
