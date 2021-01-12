@@ -22,6 +22,6 @@ String parameterToString(Serializers serializers, dynamic value) {
     }
     var serialized = serializers.serialize(value,
         specifiedType: FullType(value.runtimeType, params));
-    return json.encode(serialized);
+    return serialized;
   }
 }
