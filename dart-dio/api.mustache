@@ -56,8 +56,12 @@ class {{classname}} {
         {{#isMultipart}}
         {{#formParams}}
         {{^isFile}}
+        
+        //Info: 
+        //primitiveType: {{primitiveType}}, isMap: {{isMap}}, isArray: {{isArray}}
+        //basetype: {{baseType}}, datatype: {{dataType}}, containertype: {{containerType}}, 
         if ({{paramName}} != null) {
-            formData[r'{{baseName}}'] = parameterToString(_serializers, {{paramName}});
+            formData[r'{{baseName}}'] = parameterToString(_serializers, {{paramName}},type: const FullType({{#isArray}}BuiltList,[const FullType({{baseType}})]{{/isArray}}{{^isArray}}{{dataType}}{{/isArray}}  ));
         }
         {{/isFile}}
         {{#isFile}}
