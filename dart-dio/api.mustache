@@ -74,7 +74,7 @@ class {{classname}} {
         {{/isMultipart}}
         {{^isMultipart}}
         {{#formParams}}
-        formData['{{baseName}}'] = parameterToString(_serializers, {{paramName}});
+        formData['{{baseName}}'] = parameterToString(_serializers, {{paramName}},type: const FullType({{#isArray}}BuiltList,[const FullType({{baseType}})]{{/isArray}}{{^isArray}}{{dataType}}{{/isArray}}  ));
         {{/formParams}}
         bodyData = formData;
         {{/isMultipart}}
