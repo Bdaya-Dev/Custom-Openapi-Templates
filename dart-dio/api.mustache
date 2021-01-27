@@ -13,8 +13,9 @@ import 'package:built_collection/built_collection.dart';
 class {{classname}} {
     final Dio _dio;
     Serializers _serializers;
+    bool _fileNamesHaveBrackets;
 
-    {{classname}}(this._dio, this._serializers);
+    {{classname}}(this._dio, this._serializers,this._fileNamesHaveBrackets);
 
     {{#operation}}
     /// {{{summary}}}
@@ -53,6 +54,7 @@ class {{classname}} {
         {{#hasFormParams}}
 
         final Map<String, dynamic> formData = {};
+        final _formFiles = <MapEntry<String,MultipartFile>>[];
         {{#isMultipart}}
         {{#formParams}}
         {{^isFile}}
@@ -65,12 +67,20 @@ class {{classname}} {
         }
         {{/isFile}}
         {{#isFile}}
+        final _appended = _fileNamesHaveBrackets ? '[]': '';
         if ({{paramName}} != null) {
-            formData[r'{{baseName}}'] = {{paramName}}{{#isArray}}.toList(){{/isArray}};
+            {{#isArray}}
+            _formFiles.addAll({{paramName}}.map((x)=>MapEntry(r'{{baseName}}'+_appended,x)));
+            {{/isArray}}
+            {{^isArray}}
+            _formFiles.add(MapEntry(r'{{baseName}}'+_appended, {{paramName}}));
+            {{/isArray}}
         }
-        {{/isFile}}
-        {{/formParams}}
-        bodyData = FormData.fromMap(formData);
+        {{/isFile}}       
+        {{/formParams}}       
+        final formDataObj = FormData.fromMap(formData);
+        formDataObj.files.addAll(_formFiles);      
+        bodyData = formDataObj;
         {{/isMultipart}}
         {{^isMultipart}}
         {{#formParams}}
