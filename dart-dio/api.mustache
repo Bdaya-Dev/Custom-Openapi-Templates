@@ -55,6 +55,8 @@ class {{classname}} {
 
         final Map<String, dynamic> formData = {};
         final _formFiles = <MapEntry<String,MultipartFile>>[];
+        final _appended = _fileNamesHaveBrackets ? '[]': '';
+
         {{#isMultipart}}
         {{#formParams}}
         {{^isFile}}
@@ -67,13 +69,12 @@ class {{classname}} {
         }
         {{/isFile}}
         {{#isFile}}
-        final _appended = _fileNamesHaveBrackets ? '[]': '';
         if ({{paramName}} != null) {
             {{#isArray}}
             _formFiles.addAll({{paramName}}.map((x)=>MapEntry(r'{{baseName}}'+_appended,x)));
             {{/isArray}}
             {{^isArray}}
-            _formFiles.add(MapEntry(r'{{baseName}}'+_appended, {{paramName}}));
+            _formFiles.add(MapEntry(r'{{baseName}}', {{paramName}}));
             {{/isArray}}
         }
         {{/isFile}}       
