@@ -31,7 +31,9 @@ const FullType(BuiltMap, const [const FullType(String),const FullType({{classnam
 ..addBuilderFactory(
 const FullType(BuiltList, const [const FullType(String)]),
 () => new ListBuilder<String>())
-
+..addBuilderFactory(
+const FullType(BuiltList, const [const FullType(int)]),
+() => new ListBuilder<int>())
 ..add(Iso8601DateTimeSerializer())
 ).build();
 
