@@ -152,7 +152,7 @@ class {{classname}} {
             return Response<{{{returnType}}}>(
                 data: data,
                 headers: response.headers,
-                request: response.request,
+                requestOptions: response.requestOptions,
                 redirects: response.redirects,
                 statusCode: response.statusCode,
                 statusMessage: response.statusMessage,
