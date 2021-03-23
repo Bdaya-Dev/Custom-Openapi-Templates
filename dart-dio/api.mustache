@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:built_value/serializer.dart';
-import 'package:built_collection/built_collection.dart';
-
+{{!import 'package:built_collection/built_collection.dart';}}
 {{#operations}}
 {{#modelImports}}import 'package:{{pubName}}/model/{{.}}.dart';
 {{/modelImports}}
@@ -13,8 +12,9 @@ import 'package:built_collection/built_collection.dart';
 class {{classname}} {
     final Dio _dio;
     Serializers _serializers;
-
-    {{classname}}(this._dio, this._serializers);
+    bool _fileNamesHaveBrackets;
+    String get _appended => _fileNamesHaveBrackets ? '[]': '';
+    {{classname}}(this._dio, this._serializers,this._fileNamesHaveBrackets);
 
     {{#operation}}
     /// {{{summary}}}
@@ -53,24 +53,37 @@ class {{classname}} {
         {{#hasFormParams}}
 
         final Map<String, dynamic> formData = {};
+        final _formFiles = <MapEntry<String,MultipartFile>>[];        
+
         {{#isMultipart}}
         {{#formParams}}
         {{^isFile}}
+        
+        //Info: 
+        //primitiveType: {{primitiveType}}, isMap: {{isMap}}, isArray: {{isArray}}
+        //basetype: {{baseType}}, datatype: {{dataType}}, containertype: {{containerType}}, 
         if ({{paramName}} != null) {
-            formData[r'{{baseName}}'] = parameterToString(_serializers, {{paramName}});
+            formData[r'{{baseName}}'] = parameterToString(_serializers, {{paramName}},type: const FullType({{#isArray}}BuiltList,[const FullType({{baseType}})]{{/isArray}}{{^isArray}}{{dataType}}{{/isArray}}  ));
         }
         {{/isFile}}
         {{#isFile}}
         if ({{paramName}} != null) {
-            formData[r'{{baseName}}'] = {{paramName}}{{#isArray}}.toList(){{/isArray}};
+            {{#isArray}}
+            _formFiles.addAll({{paramName}}.map((x)=>MapEntry(r'{{baseName}}'+_appended,x)));
+            {{/isArray}}
+            {{^isArray}}
+            _formFiles.add(MapEntry(r'{{baseName}}', {{paramName}}));
+            {{/isArray}}
         }
-        {{/isFile}}
-        {{/formParams}}
-        bodyData = FormData.fromMap(formData);
+        {{/isFile}}       
+        {{/formParams}}       
+        final formDataObj = FormData.fromMap(formData);
+        formDataObj.files.addAll(_formFiles);      
+        bodyData = formDataObj;
         {{/isMultipart}}
         {{^isMultipart}}
         {{#formParams}}
-        formData['{{baseName}}'] = parameterToString(_serializers, {{paramName}});
+        formData['{{baseName}}'] = parameterToString(_serializers, {{paramName}},type: const FullType({{#isArray}}BuiltList,[const FullType({{baseType}})]{{/isArray}}{{^isArray}}{{dataType}}{{/isArray}}  ));
         {{/formParams}}
         bodyData = formData;
         {{/isMultipart}}
@@ -78,12 +91,12 @@ class {{classname}} {
         {{#bodyParam}}
 
             {{#isArray}}
-        const type = FullType(BuiltList, [FullType({{baseType}})]);
-        final serializedBody = _serializers.serialize({{paramName}}, specifiedType: type);
+            const type = FullType(BuiltList, [FullType({{baseType}})]);
             {{/isArray}}
             {{^isArray}}
-        final serializedBody = _serializers.serialize({{paramName}});
+            const type = FullType({{baseType}});
             {{/isArray}}
+        final serializedBody = _serializers.serialize({{paramName}},specifiedType: type);
         final json{{paramName}} = json.encode(serializedBody);
         bodyData = json{{paramName}};
         {{/bodyParam}}

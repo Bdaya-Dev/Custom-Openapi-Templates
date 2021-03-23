@@ -16,8 +16,9 @@ class {{clientName}} {
     Dio dio;
     Serializers serializers;
     String basePath = '{{{basePath}}}';
+    bool fileNamesHaveBrackets;
 
-    {{clientName}}({this.dio, Serializers serializers, String basePathOverride, int connectTimeoutOverride, int receiveTimeoutOverride, List<Interceptor> interceptors}) {
+    {{clientName}}({this.dio, Serializers serializers, String basePathOverride, int connectTimeoutOverride, int receiveTimeoutOverride, List<Interceptor> interceptors, bool fileNamesHaveBrackets=true}) {
         if (dio == null) {
             BaseOptions options = new BaseOptions(
                 baseUrl: basePathOverride ?? basePath,
@@ -34,6 +35,7 @@ class {{clientName}} {
         }
 
         this.serializers = serializers ?? standardSerializers;
+        this.fileNamesHaveBrackets = fileNamesHaveBrackets;
     }
 
     void setOAuthToken(String name, String token) {
@@ -54,7 +56,7 @@ class {{clientName}} {
     * by doing that all interceptors will not be executed
     */
     {{classname}} get{{classname}}() {
-    return {{classname}}(dio, serializers);
+    return {{classname}}(dio, serializers, fileNamesHaveBrackets);
     }
 
 {{/apis}}{{/apiInfo}}
