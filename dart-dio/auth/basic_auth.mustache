@@ -1,5 +1,3 @@
-{{>header}}
-import 'dart:async';
 import 'dart:convert';
 import 'package:{{pubName}}/auth/auth.dart';
 import 'package:dio/dio.dart';
@@ -12,7 +10,7 @@ class BasicAuthInfo {
 }
 
 class BasicAuthInterceptor extends AuthInterceptor {
-    Map<String, BasicAuthInfo> authInfo = {};
+    final authInfo = <String, BasicAuthInfo>{};
 
     @override
     void onRequest(RequestOptions options, RequestInterceptorHandler handler) {

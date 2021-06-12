@@ -1,10 +1,8 @@
-{{>header}}
-import 'dart:async';
 import 'package:{{pubName}}/auth/auth.dart';
 import 'package:dio/dio.dart';
 
 class ApiKeyAuthInterceptor extends AuthInterceptor {
-    Map<String, String> apiKeys = {};
+    final apiKeys = <String, String>{};
 
     @override
     void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
