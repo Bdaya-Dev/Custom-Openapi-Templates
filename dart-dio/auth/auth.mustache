@@ -1,4 +1,3 @@
-{{>header}}
 import 'package:dio/dio.dart';
 
 abstract class AuthInterceptor extends Interceptor {
@@ -8,13 +7,17 @@ abstract class AuthInterceptor extends Interceptor {
      */
     List<Map<String, dynamic>> getAuthInfo(RequestOptions route, String type) {
         if (route.extra.containsKey('secure')) {
-            final auth = route.extra['secure'] as List<Map<String, String>>;
+            final auth =
+          (route.extra['secure'] as List?)?.cast<Map<String, dynamic>>();
+      
             final results = <Map<String, dynamic>>[];
-            for (final info in auth) {
-                if (info['type'] == type) {
-                    results.add(info);
-                }
-            }
+             if (auth != null) {
+        for (final info in auth) {
+          if (info['type'] == type) {
+            results.add(info);
+          }
+        }
+      }
             return results;
         }
         return [];
