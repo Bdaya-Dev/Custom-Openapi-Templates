@@ -141,15 +141,15 @@ class {{classname}} {
         {{/returnTypeIsPrimitive}}
         {{^returnTypeIsPrimitive}}
             final serializer = _serializers.serializerForType({{{returnType}}}) as Serializer<{{{returnType}}}>?;
-            final data =  serializer == null
+            final data =  serializer == null || _respData == null || (_respData is String && _respData.isEmpty)
           ? null
-          :_serializers.deserializeWith<{{{returnType}}}>(serializer, _respData is String ? jsonDecode(_respData) : _respData,);
+          :_serializers.deserializeWith<{{{returnType}}}>(serializer, _respData is String  ? jsonDecode(_respData) : _respData,);
         {{/returnTypeIsPrimitive}}
         {{/returnSimpleType}}
         {{^returnSimpleType}}
             const collectionType = {{#isMap}}BuiltMap{{/isMap}}{{^isMap}}BuiltList{{/isMap}};
             const type = FullType(collectionType, [{{#isMap}}FullType(String), {{/isMap}}FullType({{{returnBaseType}}})]);
-            final data = _serializers.deserialize(_respData is String ? jsonDecode(_respData) : _respData, specifiedType: type,) as {{{returnType}}};
+            final data = _respData == null || (_respData is String && _respData.isEmpty) ? null : _serializers.deserialize(_respData is String ? jsonDecode(_respData) : _respData, specifiedType: type,) as {{{returnType}}};
         {{/returnSimpleType}}
         {{/isResponseFile}}
 
